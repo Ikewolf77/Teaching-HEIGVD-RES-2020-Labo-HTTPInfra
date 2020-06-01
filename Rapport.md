@@ -268,3 +268,20 @@ config-template.php
 Après lancement du container, in peut observer les adresses dynamiques associées ainsi que le serveur qui tourne sur les requêtes GET
 
 ![](Images/lancementfinal.png)
+
+### Procédure de test
+
+Pour tester notre configuration, on peut lancer plusieurs container et récupérer celles que l'on veut, pour ensuite passer leurs adresses IP en tant que variables d'environnement de notre reverse proxy. Pour ceci :
+
+```
+docker run -d res/apache (x fois)
+docker run -d --name apache_static res/apache 
+docker run -d res/express (x fois)
+docker run -d --name express_dynamic res/express 
+
+docker inspect express_dynamic | grep -i ipaddr
+docker inspect apache_static | grep -i ipaddr
+
+docker run -d -e STATIC_APP=172.17.0.X:80 -e DYNAMIC_APP=172.17.0.Y:3000 --name apache_rp -p 8080:80 res/apache_rp
+```
+

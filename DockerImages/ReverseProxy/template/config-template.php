@@ -1,4 +1,3 @@
-
 <?php
     $static_app = getenv('STATIC_APP');
 	$dynamic_app = getenv('DYNAMIC_APP');
